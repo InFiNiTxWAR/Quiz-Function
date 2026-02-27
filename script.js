@@ -47,6 +47,48 @@ function startQuiz(){
 }
 function showQuestion(){
     resetState()
-    let currentQuestionIndex
+    let currentQuestion = questions[currentQuestionIndex];
+    questionElement.innerText = currentQuestion.question
+
+    currentQuestion.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.innerText = answer.text;
+        button.addEventListener("click", () => selectAnswer(answer.correct));
+        answersElements.appendChild(button)
+    })
+
 
 }
+function resetState(){
+    nextButton.style.display = "none"
+    answersElements.innerHTML = ""
+
+}
+function selectAnswer(correct){
+    if (correct){
+        score++;
+    }
+    nextButton.style.display = "block"
+
+}
+nextButton.addEventListener("click", () => {
+    currentQuestionIndex++
+    if(currentQuestionIndex<questions.length){
+        showQuestion();
+
+    }else{
+        showResult()
+    }
+})
+function showResult(){
+    questionElement.innerText = "";
+    answersElements.innerHTML = ""
+    nextButton.style.display ="none";
+    resultContainer.classList.remove("hidden")
+     scoreElement.innerText = Você acertou ${score} de ${questions.length} perguntas!;
+}
+function restarQuiz(){
+    startQuiz();
+
+}
+startQuiz();
